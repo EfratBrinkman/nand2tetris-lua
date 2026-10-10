@@ -1,0 +1,75 @@
+class ShapeGame {
+    field Shape shape;
+    field int shapeType, actionCount;
+
+    constructor ShapeGame new() {
+        let actionCount = 0;
+        let shapeType = 0;
+        return this;
+    }
+
+    method void dispose() {
+        if (~(shape = null)) { do shape.dispose(); }
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void run() {
+        var char key;
+        var boolean exit;
+        let exit = false;
+
+        do Output.printString("Press A for Apple, L for Love:");
+        while (shapeType = 0) {
+            let key = Keyboard.keyPressed();
+            if (key = 65) { let shapeType = 1; } // A
+            if (key = 76) { let shapeType = 2; } // L
+        }
+        
+        do Screen.clearScreen();
+        let shape = Shape.new(shapeType);
+        
+        do Output.moveCursor(0,0);
+        do Output.printString("Arrows: Move | Z: Grow | X: Shrink | Q: Quit");
+
+        while (~exit) {
+            while (key = 0) { 
+                let key = Keyboard.keyPressed();
+            }
+            
+            if (key = 81) { let exit = true; } // Q 
+            
+            if (key = 131) { do shape.moveUp(); let actionCount = actionCount + 1; }   // Up
+            if (key = 133) { do shape.moveDown(); let actionCount = actionCount + 1; } // Down
+            if (key = 130) { do shape.moveLeft(); let actionCount = actionCount + 1; } // Left
+            if (key = 132) { do shape.moveRight(); let actionCount = actionCount + 1; } // Right
+            
+            if (key = 90)  { do shape.incSize(); let actionCount = actionCount + 1; } // Z - Grow 
+            if (key = 88)  { do shape.decSize(); let actionCount = actionCount + 1; } // X- Shrink
+
+            while (~(key = 0)) {
+                let key = Keyboard.keyPressed();
+            }
+            let key = 0;
+        }
+
+        do showSummary();
+        return;
+    }
+
+    method void showSummary() {
+        do Screen.clearScreen();
+        do Output.moveCursor(10, 15);
+        do Output.printString("--- Final Report ---");
+        do Output.println();
+        do Output.moveCursor(12, 15);
+        do Output.printString("Object Selected: ");
+        if (shapeType = 1) { do Output.printString("Apple"); }
+        else { do Output.printString("Love"); }
+        do Output.println();
+        do Output.moveCursor(14, 15);
+        do Output.printString("Total Actions (including moves): ");
+        do Output.printInt(actionCount);
+        return;
+    }
+}

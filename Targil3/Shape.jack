@@ -1,0 +1,74 @@
+class Shape {
+    field int x, y, size, type;
+
+    constructor Shape new(int Atype) {
+        let x = 200;
+        let y = 100;
+        let size = 20; 
+        let type = Atype;
+        do draw();
+        return this;
+    }
+
+    method void draw() {
+        do Screen.setColor(true);
+        if (type = 1) { do drawApple(); }
+        else { do drawHeart(); }
+        return;
+    }
+
+    method void erase() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x - 2, y - 7, x + size + 2, y + size + 12);
+        return;
+    }
+
+    method void drawHeart() {
+        var int midX, bottomY;
+        let midX = x + (size / 2);
+        let bottomY = y + size + 10; // נקודת השפיץ התחתונה
+
+        // החלק העליון - שני חצאי עיגול
+        do Screen.drawCircle(x + (size / 4), y + (size / 4), size / 4);
+        do Screen.drawCircle(x + (size - (size / 4)), y + (size / 4), size / 4);
+        
+        // החלק המרכזי המחבר
+        do Screen.drawRectangle(x, y + (size / 4), x + size, y + (size / 2));
+
+        // הוספת השפיץ התחתון בעזרת קווים ליצירת משולש
+        do Screen.drawLine(x, y + (size / 2), midX, bottomY);
+        do Screen.drawLine(x + size, y + (size / 2), midX, bottomY);
+        return;
+    }
+
+    method void drawApple() {
+        do Screen.drawCircle(x + (size / 2), y + (size / 2), size / 2); // גוף התפוח
+        do Screen.drawRectangle(x + (size / 2) - 1, y - 5, x + (size / 2) + 1, y); // גבעול
+        return;
+    }
+
+    method void incSize() {
+        if (((y + size + 15) < 255) & ((x + size + 5) < 511)) {
+            do erase();
+            let size = size + 5;
+            do draw();
+        }
+        return;
+    }
+
+    method void decSize() {
+        if (size > 10) {
+            do erase();
+            let size = size - 5;
+            do draw();
+        }
+        return;
+    }
+
+    method void moveUp() { if (y > 10) { do erase(); let y = y - 5; do draw(); } return; }
+    method void moveDown() { if ((y + size + 15) < 255) { do erase(); let y = y + 5; do draw(); } return; }
+    method void moveLeft() { if (x > 5) { do erase(); let x = x - 5; do draw(); } return; }
+    method void moveRight() { if ((x + size + 5) < 511) { do erase(); let x = x + 5; do draw(); } return; }
+    
+    method void dispose() { do Memory.deAlloc(this); return; }
+}

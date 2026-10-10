@@ -1,0 +1,11 @@
+
+/** Initializes the Shape Game and starts it. */
+class Main {
+    function void main() {
+        var ShapeGame game;
+        let game = ShapeGame.new();
+        do game.run();
+        do game.dispose();
+        return;
+    }
+}

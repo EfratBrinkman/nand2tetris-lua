@@ -1,0 +1,5 @@
+// This is a test file
+push constant 7
+
+   pop local 2   // complex line with spaces
+add
